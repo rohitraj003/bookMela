@@ -1,23 +1,29 @@
-const { compare } = require('bcrypt');
-const user = require('../model/user_model.js')
-// const bycrypt = require('bcryptjs')
+import user from '../model/user_model'
+import bcryptjs from "bcryptjs";
 
 
-const signup = async(req,res) => {
+export const signup = async(req,res) => {
     try {
         const {Name,Email,Password} = req.body;
         const newUser = await user.findOne({ Email })
         if(newUser){
             return res.status(400).json({message:"User already exists"})
         }
-        // const hashpassword = await bycrypt.hash(Password,10);
+        const hashpassword = await bcryptjs.hash(Password,10);
         const createUser = new user({
             Name:Name,
             Email:Email,
-            Password:Password
+            Password:hashpassword
         })
         await createUser.save();
-        res.status(200).json({message:"User created successfully"})
+        res.status(200).json({
+            message:"User created successfully",
+            newUser:{
+                _id:createUser._id,
+                Name:createUser.Name,
+                Email:createUser.Email
+            }
+        })
 
 
     } catch (error) {
@@ -26,12 +32,12 @@ const signup = async(req,res) => {
     }
 }
 
-const login = async(req,res) =>{
+export const login = async(req,res) =>{
     try {
         const {Email,Password} = req.body;
         const userExist = await user.findOne({Email})
-        // const isMatch = await compare(Password,userExist.Password)
-        if(!userExist || userExist.Password !== Password){
+        const isMatch = await bcryptjs.compare(Password,userExist.Password);
+        if(!userExist || !isMatch){
             return res.status(400).json({message:"Invalid username or password"})
         } else{
             res.status(200).json({message:"User logged in successfully",cus:{
@@ -45,5 +51,3 @@ const login = async(req,res) =>{
         res.status(500).json({message:"Internal Server Error"});
     }
 }
-
-module.exports = {signup,login}

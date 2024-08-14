@@ -1,6 +1,6 @@
-const Book = require('../model/book_model.js');
+import Book from '../model/book_model';
 
-const getBook = async (req, res) => {
+export const getBook = async (req, res) => {
     try {
         const book = await Book.find();
         res.status(200).json(book);
@@ -10,5 +10,5 @@ const getBook = async (req, res) => {
     }
 }
 
-module.exports = { getBook }
+
 
