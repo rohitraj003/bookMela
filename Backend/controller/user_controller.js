@@ -1,4 +1,4 @@
-import user from '../model/user_model'
+import user from '../model/user_model.js'
 import bcryptjs from "bcryptjs-react";
 
 
@@ -30,7 +30,7 @@ export const signup = async(req,res) => {
         console.log("Error: ", error.message);
         res.status(500).json({message:"Server Error"});
     }
-}
+};
 
 export const login = async(req,res) =>{
     try {
@@ -50,4 +50,4 @@ export const login = async(req,res) =>{
         console.log("Error ",error.message);
         res.status(500).json({message:"Internal Server Error"});
     }
-}
+};

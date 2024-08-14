@@ -1,4 +1,4 @@
-import Book from '../model/book_model';
+import Book from '../model/book_model.js';
 
 export const getBook = async (req, res) => {
     try {
@@ -8,7 +8,7 @@ export const getBook = async (req, res) => {
         console.log("Error: ", error);
         res.status(500).json(error);
     }
-}
+};
 
 
 

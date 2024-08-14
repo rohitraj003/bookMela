@@ -1,9 +1,10 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const dotenv = require('dotenv')
-const cors = require('cors')
+import express from 'express'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+import cors from 'cors'
 
-
+import bookRoute from  './route/book_route.js'
+import userRoute from './route/user_route.js'
 
 const app = express()
 
@@ -19,9 +20,6 @@ const URI = process.env.MONGODB_URI
 
 
 
-
-
-
 // connect to mongoDB
 try {
     mongoose.connect(URI);
@@ -30,8 +28,9 @@ try {
     console.log('Error connecting to MongoDB ',error);
 }
 
-app.use("/book",require('./route/book_route.js'))
-app.use("/users",require('./route/user_route.js'))
+// defining the routes
+app.use('/book',bookRoute)
+app.use('/user',userRoute)
 
 
 app.listen(port, () => {
